@@ -1,0 +1,55 @@
+PLUGIN:
+^^^^^^
+  * Shows view of other player to admin.
+  * Password function with setinfo.
+
+USAGE (these are client console commands):
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+eye <part_of_username>|#playerid
+ - Shows view of other player
+
+eye_back
+ - Moves your view back to normal
+
+While 'eyeing', your jump key will cycle you through all the current players.
+
+
+CVARS:
+^^^^^
+eye_setinfo "_eye_pw" 
+ - Password setinfo slot name (like with passwords with Adminmod)
+
+eye_password ""
+ - Password needed for using Eye plugin (No password means everyone can use Eye Plugin)
+
+
+HISTORY:
+^^^^^^^
+        [1.2]
+         - Changed "dropitem" cycle bind to "+jump" bind.
+         - Fixed crash bugs.
+
+        [1.1.Buzz]
+          - Added changes by Buzzkill.
+            + Hud display of the currently 'Eye'd' player, along with his current health, armor and current speed/percent of max (keeping tabs on bunnyhoppers). Also added current team and class, though as integers only.
+            + While 'eyeing', your "dropitem" bounded key will cycle you through all the current players.
+
+        [1.1a]
+          - Added USAGE section to readme (doh!)
+
+        [1.1]
+          - Fixed bug where you could use eye commands if you had not set setinfo password at all.
+
+        [1.0]
+          - Source clean up by disq 
+          - Password function added
+          - Linux compile included
+
+        [0.2]
+          - First version
+
+
+KNOWN BUGS:
+^^^^^^^^^^
+- "Slow motion" feeling because low angle update accurency in other player view.
+- Sound bugs in other player view.
