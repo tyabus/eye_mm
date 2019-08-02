@@ -1,10 +1,10 @@
 # eye metamod plugin Makefile for linux and win32 (mingw)
 
-LFLAGS = -shared -static
+LFLAGS = -lm -shared -static
 ARCH = $(shell uname -m)
 EYE_COMMIT = $(firstword $(shell git rev-parse --short=6 HEAD) unknown)
-CFLAGS =  -O1 -DVVERSION=\"$(EYE_COMMIT)\" -fexpensive-optimizations -ffast-math -fpermissive \
-	  -funroll-loops -fomit-frame-pointer -Wall -fno-exceptions -fno-rtti -fPIC \
+CFLAGS =  -O2 -DVVERSION=\"$(EYE_COMMIT)\" -fPIC -funsafe-loop-optimizations -fno-rtti \
+	  -fexpensive-optimizations -fomit-frame-pointer -fno-exceptions -Wall \
 	  -Dstricmp=strcasecmp -D_strnicmp=strncasecmp -Dstrnicmp=strncasecmp -Dstrcmpi=strcasecmp
 
 # force i686 postfix on x86_64 architecture
