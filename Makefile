@@ -21,10 +21,11 @@ ifeq ($(ARCH), x86_64)
 endif
 
 INCLUDEDIRS = -Isrc/. \
-	      -Isrc/metamod \
-	      -Isrc/engine \
-	      -Isrc/common \
-	      -Isrc/dlls
+	      -Isrc/include/metamod \
+	      -Isrc/include/engine \
+	      -Isrc/include/common \
+	      -Isrc/include/dlls \
+	      -Isrc/include/pm_shared
 
 OBJ =   src/dllapi.o		\
 	src/meta_api.o		\

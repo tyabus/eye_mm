@@ -1,6 +1,6 @@
 /***
 *
-*	Copyright (c) 1999, Valve LLC. All rights reserved.
+*	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
 *	
 *	This product contains software technology licensed from Id 
 *	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
@@ -16,7 +16,7 @@
 //  cdll_dll.h
 
 // this file is included by both the game-dll and the client-dll,
-
+#pragma once
 #ifndef CDLL_DLL_H
 #define CDLL_DLL_H
 
@@ -29,11 +29,11 @@
 
 #define	HIDEHUD_WEAPONS		( 1<<0 )
 #define	HIDEHUD_FLASHLIGHT	( 1<<1 )
-#define	HIDEHUD_ALL			( 1<<2 )
-#define 	HIDEHUD_HEALTH		( 1<<3 )
+#define	HIDEHUD_ALL		( 1<<2 )
+#define HIDEHUD_HEALTH		( 1<<3 )
 
-#define	MAX_AMMO_TYPES	32		// ???
-#define MAX_AMMO_SLOTS  32		// not really slots
+#define	MAX_AMMO_TYPES		32		// ???
+#define MAX_AMMO_SLOTS		32		// not really slots
 
 #define HUD_PRINTNOTIFY		1
 #define HUD_PRINTCONSOLE	2
@@ -41,6 +41,5 @@
 #define HUD_PRINTCENTER		4
 
 
-#define WEAPON_SUIT			31
-
+#define WEAPON_SUIT		31
 #endif

@@ -43,7 +43,7 @@ char* UTIL_VarArgs( char *format, ... )
 	static char	string[1024];
 	
 	va_start  (argptr, format);
-	_vsnprintf(string, 1024, format, argptr);
+	vsnprintf(string, 1024, format, argptr);
 	va_end    (argptr);
 	
 	string[sizeof(string)-1] = 0;
@@ -62,7 +62,7 @@ void UTIL_LogPrintf( char *fmt, ... )
 	static char		string[1024];
 	
 	va_start  ( argptr, fmt );
-	_vsnprintf( string, 1024, fmt, argptr );
+	vsnprintf( string, 1024, fmt, argptr );
 	va_end    ( argptr );
 	
 	string[sizeof(string)-1] = 0;

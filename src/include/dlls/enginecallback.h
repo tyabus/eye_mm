@@ -1,6 +1,6 @@
 /***
 *
-*	Copyright (c) 1999, Valve LLC. All rights reserved.
+*	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
 *	
 *	This product contains software technology licensed from Id 
 *	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
@@ -14,13 +14,13 @@
 ****/
 #ifndef ENGINECALLBACK_H
 #define ENGINECALLBACK_H
-#ifdef _WIN32
-#ifndef __MINGW32__
+
 #pragma once
-#endif /* not __MINGW32__ */
-#endif
 
 #include "event_flags.h"
+
+// Fix warning in MSVC8
+#undef SERVER_EXECUTE
 
 // Must be provided by user of this code
 extern enginefuncs_t g_engfuncs;
@@ -71,9 +71,10 @@ extern enginefuncs_t g_engfuncs;
 #define CRC32_FINAL          (*g_engfuncs.pfnCRC32_Final)
 #define RANDOM_LONG		(*g_engfuncs.pfnRandomLong)
 #define RANDOM_FLOAT	(*g_engfuncs.pfnRandomFloat)
-#define GETPLAYERWONID	(*g_engfuncs.pfnGetPlayerWONId)
+#define GETPLAYERAUTHID	(*g_engfuncs.pfnGetPlayerAuthId)
 
-inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL ) {
+inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL )
+{
 	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ed);
 }
 #define MESSAGE_END		(*g_engfuncs.pfnMessageEnd)
@@ -94,9 +95,10 @@ inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin = NU
 #define ALERT			(*g_engfuncs.pfnAlertMessage)
 #define ENGINE_FPRINTF	(*g_engfuncs.pfnEngineFprintf)
 #define ALLOC_PRIVATE	(*g_engfuncs.pfnPvAllocEntPrivateData)
+
 inline void *GET_PRIVATE( edict_t *pent )
 {
-	if ( pent )
+	if( pent )
 		return pent->pvPrivateData;
 	return NULL;
 }
@@ -112,15 +114,8 @@ inline void *GET_PRIVATE( edict_t *pent )
 #define GET_MODEL_PTR				(*g_engfuncs.pfnGetModelPtr)
 #define REG_USER_MSG				(*g_engfuncs.pfnRegUserMsg)
 #define GET_BONE_POSITION			(*g_engfuncs.pfnGetBonePosition)
-
-#ifndef __BORLANDC__
-	#define FUNCTION_FROM_NAME			(*g_engfuncs.pfnFunctionFromName)
-	#define NAME_FOR_FUNCTION			(*g_engfuncs.pfnNameForFunction)
-#else
-	unsigned long FUNCTION_FROM_NAME(const char *pName);
-	const char *NAME_FOR_FUNCTION(unsigned long function);
-#endif	
-
+#define FUNCTION_FROM_NAME			(*g_engfuncs.pfnFunctionFromName)
+#define NAME_FOR_FUNCTION			(*g_engfuncs.pfnNameForFunction)
 #define TRACE_TEXTURE				(*g_engfuncs.pfnTraceTexture)
 #define CLIENT_PRINTF				(*g_engfuncs.pfnClientPrintf)
 #define CMD_ARGS					(*g_engfuncs.pfnCmd_Args)
@@ -165,8 +160,5 @@ inline void *GET_PRIVATE( edict_t *pent )
 #define ENGINE_FORCE_UNMODIFIED	( *g_engfuncs.pfnForceUnmodified )
 
 #define PLAYER_CNX_STATS		( *g_engfuncs.pfnGetPlayerStats )
-
-//JK:Added in
-#define GETPLAYERAUTHID		( *g_engfuncs.pfnGetPlayerAuthId )
 
 #endif		//ENGINECALLBACK_H
