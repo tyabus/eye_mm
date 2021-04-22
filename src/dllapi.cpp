@@ -335,21 +335,24 @@ static void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 static void ClientCommand( edict_t *pThis )
 {
 	int id = ENTINDEX2(pThis);
+
 	if(!id) RETURN_META(MRES_IGNORED);
-	
+
 	if (!players[id].IsAllowedToUse)
 		RETURN_META(MRES_IGNORED);
 
 	const char *pcmd = CMD_ARGV(0);
-	
+
 	if (!strcasecmp(pcmd,"eye_back"))
 	{
 		UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] Reset to normal!\n");
-		
+
 		SET_VIEW(pThis, pThis);
-		
+
 		players[id].curView = NULL;
 		players[id].curPlayer = NULL;
+
+		RETURN_META(MRES_SUPERCEDE);
 	}
 	/*
 	** Changed "dropitems" to "+jump" method (See CmdStart)
