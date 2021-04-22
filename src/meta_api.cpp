@@ -55,7 +55,6 @@ static cvar_t eye_cvars[] = {
 	{"eye_version", VVERSION, FCVAR_EXTDLL | FCVAR_SERVER , 0, NULL},
 	{"eye_setinfo", "_eye_pw", FCVAR_EXTDLL , 0, NULL},
 	{"eye_password", "", FCVAR_EXTDLL , 0, NULL},
-	
 	{NULL,NULL,0,0,NULL},
 };
 

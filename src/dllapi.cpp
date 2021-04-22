@@ -44,18 +44,18 @@ void RemoveEye(int i)
 static void CreateEye(int i, edict_t *pThis)
 {
 	players[i].Eye  = CREATE_NAMED_ENTITY(MAKE_STRING("func_wall")); //func_wall is in all mods
-		
+
 	entvars_t *pev  = VARS(players[i].Eye);
 
 	pev->solid      = SOLID_NOT;
 	pev->movetype   = MOVETYPE_NOCLIP;
-	
+
 	pev->rendermode = kRenderGlow;
 	pev->renderfx   = kRenderFxNoDissipation;
 	pev->renderamt  = 255;
-	
+
 	SET_MODEL(players[i].Eye, pDotSpriteName);
-	
+
 	pev->owner      = pThis;
 }
 
@@ -119,7 +119,7 @@ static void ClientPutInServer(edict_t *pThis)
 		RETURN_META(MRES_IGNORED);
 
 	RemoveEye(id);
-	
+
 	players[id].is_connected = true;
 	players[id].IsAllowedToUse = false;
 	players[id].old_in_jump = false;
@@ -132,7 +132,7 @@ static void ClientPutInServer(edict_t *pThis)
 	players[id].curPlayer = NULL;
 
 	RETURN_META(MRES_IGNORED);
-} 
+}
 
 
 /**************************************************************
@@ -143,7 +143,7 @@ static void ClientPutInServer(edict_t *pThis)
 static void ClientDisconnect_Post(edict_t *pThis)
 {
 	int id = ENTINDEX2(pThis);
-	
+
 	//Check for players that are 'eyeing' this player
 	for(int i = 1, max = gpGlobals->maxClients; i <= max; i++)
 	{
@@ -153,27 +153,27 @@ static void ClientDisconnect_Post(edict_t *pThis)
 		edict_t * pPlayer = INDEXENT2(i);
 		if(FNullEnt(pPlayer))
 			continue;
-		
+
 		UTIL_SendTextMsg(pPlayer, HUD_PRINTTALK, "[EYE] Reset to normal! (Target disconnected from server)\n");
-		
+
 		SET_VIEW(pPlayer, pPlayer);
-		
+
 		players[i].curView = NULL;
 		players[i].curPlayer = NULL;
 	}
-	
+
 	//Remove eyeball
 	RemoveEye(id);
-		
+
 	players[id].Eye     = NULL;
 	players[id].curView = NULL;
 	players[id].curPlayer = NULL;
-	
+
 	players[id].is_connected = false;
 	players[id].IsAllowedToUse = false;
-	
+
 	SET_VIEW(pThis, pThis);
-	
+
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -336,7 +336,8 @@ static void ClientCommand( edict_t *pThis )
 {
 	int id = ENTINDEX2(pThis);
 
-	if(!id) RETURN_META(MRES_IGNORED);
+	if (!id)
+		RETURN_META(MRES_IGNORED);
 
 	if (!players[id].IsAllowedToUse)
 		RETURN_META(MRES_IGNORED);
@@ -354,48 +355,27 @@ static void ClientCommand( edict_t *pThis )
 
 		RETURN_META(MRES_SUPERCEDE);
 	}
-	/*
-	** Changed "dropitems" to "+jump" method (See CmdStart)
-	*/
-	/*
-	else if (!strcasecmp(pcmd,"dropitems"))
-	{
-		players[id].plCount++;
-		if (players[id].plCount > gpGlobals->maxClients)
-			players[id].plCount = 1;
-		
-		// we can safely assume at least one person is connected
-		edict_t* pPlayer = INDEXENT2(players[id].plCount);
-		while (!players[ENTINDEX2(pPlayer)].is_connected) {
-			players[id].plCount++;
-			if (players[id].plCount > gpGlobals->maxClients)
-				players[id].plCount = 1;
-			
-			pPlayer = INDEXENT2(players[id].plCount);
-		}
-		
-		edict_t *pView = players[players[id].plCount].Eye;
-
-		SET_VIEW(pThis, pView);
-		
-		players[id].curView = pView;
-		players[id].curPlayer = pPlayer;
-	}*/
 	else if (!strcasecmp(pcmd,"eye"))
 	{
 		edict_t *pView;
 		const char *param = CMD_ARGV(1);
-		
-		if (param==NULL || !*param) 
+		if (param==NULL || !*param)
 		{
 			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] usage: eye <part_of_username>|#playerid\n");
 			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] usage: eye_back\n");
 
 			RETURN_META(MRES_SUPERCEDE);
 		}
-		
+
 		pView = UTIL_GetView(param);
-		
+
+		if (!FNullEnt(pView) && pView == pThis)
+		{
+			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] You cant spectate yourself!\n");
+
+			RETURN_META(MRES_SUPERCEDE);
+		}
+
 		if (!FNullEnt(pView))
 		{
 			UTIL_SendTextMsg(
@@ -408,16 +388,20 @@ static void ClientCommand( edict_t *pThis )
 			);
 
 			SET_VIEW(pThis,pView);
-			
+
 			players[id].curView = pView;
 			players[id].curPlayer = UTIL_GetPlayerEdict(param);
 
 			players[id].plCount = ENTINDEX2(players[id].curPlayer);
 		}
-		
+		else
+		{
+			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] Cant find specified player!\n");
+		}
+
 		RETURN_META(MRES_SUPERCEDE);
 	}
-	
+
 	RETURN_META(MRES_IGNORED);
 }
 

@@ -36,21 +36,19 @@
 
 #include "eye.h"
 
-
 char* UTIL_VarArgs( char *format, ... )
 {
 	va_list		argptr;
 	static char	string[1024];
-	
+
 	va_start  (argptr, format);
 	vsnprintf(string, 1024, format, argptr);
 	va_end    (argptr);
-	
+
 	string[sizeof(string)-1] = 0;
 
 	return string;
 }
-	
 
 //=========================================================
 // UTIL_LogPrintf - Prints a logged message to console.
@@ -60,11 +58,11 @@ void UTIL_LogPrintf( char *fmt, ... )
 {
 	va_list			argptr;
 	static char		string[1024];
-	
+
 	va_start  ( argptr, fmt );
 	vsnprintf( string, 1024, fmt, argptr );
 	va_end    ( argptr );
-	
+
 	string[sizeof(string)-1] = 0;
 
 	// Print to server console
@@ -102,12 +100,12 @@ unsigned short MyFixedUnsigned16( float value, float scale ){
 void UTIL_SendTextMsg(edict_t *client, int msg_dest, const char *msg_name)
 {
 	static int message_TextMsg = 0;
-	
+
 	if(!message_TextMsg)
 		message_TextMsg = GET_USER_MSG_ID(PLID,"TextMsg",NULL);
-	
+
 	if (!message_TextMsg || !client || client->v.flags & FL_FAKECLIENT) return;
-	
+
 	MESSAGE_BEGIN( MSG_ONE, message_TextMsg, NULL, client );
 		WRITE_BYTE( msg_dest );
 		WRITE_STRING( msg_name );
@@ -117,8 +115,8 @@ void UTIL_SendTextMsg(edict_t *client, int msg_dest, const char *msg_name)
 void UTIL_SendHudMessage(edict_t *pEntity, int msg_dest, char *pMessage)
 {
 	MESSAGE_BEGIN( MSG_ONE, SVC_TEMPENTITY, NULL, pEntity );
-		WRITE_BYTE(29); 
-		WRITE_BYTE(msg_dest & 0xFF); 
+		WRITE_BYTE(29);
+		WRITE_BYTE(msg_dest & 0xFF);
 		WRITE_SHORT(MyFixedSigned16(0.03, (1<<13) ));
 		WRITE_SHORT(MyFixedSigned16(0.1, (1<<13) ));
 		WRITE_BYTE(0);
@@ -148,11 +146,11 @@ edict_t * INDEXENT2( int playerIndex )
 {
 	edict_t * pPlayer = NULL;
 
-	if ( playerIndex > 0 && playerIndex <= gpGlobals->maxClients ) 
+	if ( playerIndex > 0 && playerIndex <= gpGlobals->maxClients )
 	{
 		pPlayer = INDEXENT( playerIndex );
 	}
-	
+
 	return pPlayer;
 }
 
@@ -170,7 +168,7 @@ int ENTINDEX2(edict_t *pEdict)
 		if( index > 0 && index <= gpGlobals->maxClients )
 			return(index);
 	}
-	
+
 	return(0);
 }
 
@@ -185,31 +183,31 @@ edict_t *UTIL_GetView(const char *cmd)
 	if (!cmd) return NULL;
 
 	int pid=-1;
-	
+
 	if (cmd[0]=='#')
 	{
 		sscanf(&cmd[1],"%d",&pid);
-		
+
 		edict_t* pPlayer = INDEXENT2(pid);
-		
-		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected) 
+
+		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected)
 			return(NULL);
 
 		return (players[ENTINDEX2(pPlayer)].Eye);
   	}
-	
+
 	for (int i=1;i<=gpGlobals->maxClients;i++)
   	{
 		edict_t* pPlayer = INDEXENT2(i);
-	
-		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected) 
+
+		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected)
 			continue;
-		if (strstr(STRING(pPlayer->v.netname),cmd)==NULL) 
+		if (strstr(STRING(pPlayer->v.netname),cmd)==NULL)
 			continue;
 
 		return (players[ENTINDEX2(pPlayer)].Eye);
   	}
-	
+
 	return(NULL);
 }
 
@@ -218,30 +216,30 @@ edict_t *UTIL_GetPlayerEdict(const char *cmd)
 	if (!cmd) return NULL;
 
 	int pid=-1;
-	
+
 	if (cmd[0]=='#')
 	{
 		sscanf(&cmd[1],"%d",&pid);
-		
+
 		edict_t* pPlayer = INDEXENT2(pid);
-		
-		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected) 
+
+		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected)
 			return(NULL);
 
 		return (pPlayer);
   	}
-	
+
 	for (int i=1;i<=gpGlobals->maxClients;i++)
   	{
 		edict_t* pPlayer = INDEXENT2(i);
-	
-		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected) 
+
+		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected)
 			continue;
-		if (strstr(STRING(pPlayer->v.netname),cmd)==NULL) 
+		if (strstr(STRING(pPlayer->v.netname),cmd)==NULL)
 			continue;
 
 		return (pPlayer);
   	}
-	
+
 	return(NULL);
 }
