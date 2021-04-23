@@ -38,10 +38,9 @@
  *
  */
 
-#include <extdll.h>		// always
-#include <meta_api.h>		// of course
-#include <sdk_util.h>		// UTIL_LogPrintf, etc
-
+#include "extdll.h" // always
+#include "meta_api.h" // of course
+#include "sdk_util.h" // UTIL_LogPrintf, etc
 #include "eye.h"
 
 // From SDK dlls/h_export.cpp:

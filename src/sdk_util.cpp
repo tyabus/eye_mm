@@ -28,15 +28,14 @@
 
 */
 
-#include <string.h>			// for strncpy(), etc
-
-#include <extdll.h>
-#include <sdk_util.h>
-#include <meta_api.h>
-
+#include "extdll.h"
+#include "sdk_util.h"
+#include "meta_api.h"
 #include "eye.h"
 
-char* UTIL_VarArgs( char *format, ... )
+#include <string.h> // for strncpy(), etc
+
+char* UTIL_VarArgs( const char *format, ... )
 {
 	va_list		argptr;
 	static char	string[1024];

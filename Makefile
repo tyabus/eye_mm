@@ -4,7 +4,7 @@ EYE_COMMIT = $(firstword $(shell git rev-parse --short=6 HEAD) unknown)
 CFLAGS =  -O2 -DVVERSION=\"$(EYE_COMMIT)\" -funsafe-loop-optimizations \
 	  -fomit-frame-pointer -fno-exceptions -Wall -ffast-math \
 	  -Dstricmp=strcasecmp -D_strnicmp=strncasecmp -Dstrnicmp=strncasecmp -Dstrcmpi=strcasecmp
-LDFLAGS = -lm -ldl -shared
+LDFLAGS = -lm -ldl -shared -Wl,--no-undefined
 
 # Force i686 postfix on x86_64 architecture
 ifeq ($(ARCH), x86_64)
@@ -22,9 +22,9 @@ INCLUDE = -Isrc/. \
 	-Isrc/include/dlls \
 	-Isrc/include/pm_shared
 
-OBJ = 	src/dllapi.o \
+OBJ = 	src/sdk_util.o \
 	src/meta_api.o \
-	src/sdk_util.o \
+	src/dllapi.o \
 
 DOCC = $(CXX) $(CFLAGS) $(INCLUDE) -o $@ -c $<
 DOO = $(CXX) -o $@ $(OBJ) $(LDFLAGS)

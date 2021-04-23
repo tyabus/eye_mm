@@ -1,15 +1,12 @@
-#include <string.h>
-
-#include <extdll.h>
-#include <sdk_util.h>
-#include <dllapi.h>
-#include <meta_api.h>
-
-#include <entity_state.h>
-#include <pm_defs.h>
-
+#include "extdll.h"
+#include "sdk_util.h"
+#include "dllapi.h"
+#include "meta_api.h"
+#include "entity_state.h"
+#include "pm_defs.h"
 #include "eye.h"
 
+#include <string.h>
 
 playerid_t players[33];
 
