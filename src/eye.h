@@ -1,15 +1,12 @@
 #ifndef __EYE_H__
 #define __EYE_H__
 
-
-#define VDATE           __DATE__
-
-#define SHORTNAME	"Eye"
+#define VVERSION	"1.3"
 #define VLOGTAG		"EYE"
-
-#define VNAME		SHORTNAME VVERSION " Metamod Plugin"
-#define VAUTHOR		"hullu & disq & Buzzkill"
-#define VURL		"http://hullu.xtragaming.com/"
+#define VDATE		__DATE__
+#define VNAME		"Eye " VVERSION " Metamod Plugin"
+#define VAUTHOR		"hullu & disq & Buzzkill & tyabus"
+#define VURL		"https://github.com/tyabus/eye_mm"
 
 typedef struct
 {

@@ -1,8 +1,7 @@
 # Eye metamod plugin Makefile for linux and win32 (mingw)
 ARCH = $(shell uname -m)
-EYE_COMMIT = $(firstword $(shell git rev-parse --short=6 HEAD) unknown)
-CFLAGS =  -O2 -DVVERSION=\"$(EYE_COMMIT)\" -funsafe-loop-optimizations \
-	  -fomit-frame-pointer -fno-exceptions -Wall -ffast-math \
+CFLAGS =  -O2 -Wall -funsafe-loop-optimizations \
+	  -fomit-frame-pointer -fno-exceptions -ffast-math \
 	  -Dstricmp=strcasecmp -D_strnicmp=strncasecmp -Dstrnicmp=strncasecmp -Dstrcmpi=strcasecmp
 LDFLAGS = -lm -ldl -shared -Wl,--no-undefined
 
