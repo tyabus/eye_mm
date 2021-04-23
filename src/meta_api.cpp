@@ -130,7 +130,7 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable,
 
 	for (i=0;i<=32;i++)
 	{
-		players[i].is_connected = false;
+		players[i].IsConnected = false;
 		players[i].IsAllowedToUse = false;
 		
 		players[i].Eye     = NULL;

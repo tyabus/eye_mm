@@ -112,12 +112,12 @@ static void ClientPutInServer(edict_t *pThis)
 {
 	int id = ENTINDEX2(pThis);
 
-	if(players[id].is_connected)
+	if(players[id].IsConnected)
 		RETURN_META(MRES_IGNORED);
 
 	RemoveEye(id);
 
-	players[id].is_connected = true;
+	players[id].IsConnected = true;
 	players[id].IsAllowedToUse = false;
 	players[id].old_in_jump = false;
 
@@ -166,7 +166,7 @@ static void ClientDisconnect_Post(edict_t *pThis)
 	players[id].curView = NULL;
 	players[id].curPlayer = NULL;
 
-	players[id].is_connected = false;
+	players[id].IsConnected = false;
 	players[id].IsAllowedToUse = false;
 
 	SET_VIEW(pThis, pThis);
@@ -185,7 +185,7 @@ static void PlayerPostThink_Post( edict_t *pThis )
 	int id = ENTINDEX2(pThis);
 	if(!id) RETURN_META(MRES_HANDLED);
 	
-	if(!players[id].is_connected)
+	if(!players[id].IsConnected)
 	{
 		//Fixes bots
 		ClientPutInServer(pThis);
@@ -269,7 +269,7 @@ static void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 	if(!i)  
 		RETURN_META(MRES_IGNORED);
 
-	if(!players[i].is_connected)
+	if(!players[i].IsConnected)
 		ClientPutInServer(pEntity);
 	
 	
@@ -414,7 +414,7 @@ static void CmdStart(edict_t *pThis, struct usercmd_s *pCmd, unsigned int random
 	if(!id) 
 		RETURN_META(MRES_IGNORED);
 	
-	if(!players[id].is_connected)
+	if(!players[id].IsConnected)
 		ClientPutInServer(pThis);
 	
 	//already pressed +jump?
@@ -442,7 +442,7 @@ static void CmdStart(edict_t *pThis, struct usercmd_s *pCmd, unsigned int random
 		
 		// we can safely assume at least one person is connected
 		edict_t* pPlayer = INDEXENT2(players[id].plCount);
-		while (!players[ENTINDEX2(pPlayer)].is_connected) {
+		while (!players[ENTINDEX2(pPlayer)].IsConnected) {
 			players[id].plCount++;
 			if (players[id].plCount > gpGlobals->maxClients)
 				players[id].plCount = 1;
@@ -488,7 +488,7 @@ static void ServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
 	{
 		players[i].next_time = next_time;
 		players[i].IsAllowedToUse = false;
-		players[i].is_connected = false;
+		players[i].IsConnected = false;
 		
 		players[i].plCount = 0;
 		
@@ -516,7 +516,7 @@ static void ServerDeactivate_Post(void)
 		players[i].curView = NULL;
 		players[i].curPlayer = NULL;
 		
-		players[i].is_connected = false;
+		players[i].IsConnected = false;
 		players[i].IsAllowedToUse = false;
 		players[i].old_in_jump = false;
 	}

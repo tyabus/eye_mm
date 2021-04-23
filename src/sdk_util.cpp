@@ -189,7 +189,7 @@ edict_t *UTIL_GetView(const char *cmd)
 
 		edict_t* pPlayer = INDEXENT2(pid);
 
-		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected)
+		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].IsConnected)
 			return(NULL);
 
 		return (players[ENTINDEX2(pPlayer)].Eye);
@@ -199,7 +199,7 @@ edict_t *UTIL_GetView(const char *cmd)
   	{
 		edict_t* pPlayer = INDEXENT2(i);
 
-		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected)
+		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].IsConnected)
 			continue;
 		if (strstr(STRING(pPlayer->v.netname),cmd)==NULL)
 			continue;
@@ -222,7 +222,7 @@ edict_t *UTIL_GetPlayerEdict(const char *cmd)
 
 		edict_t* pPlayer = INDEXENT2(pid);
 
-		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected)
+		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].IsConnected)
 			return(NULL);
 
 		return (pPlayer);
@@ -232,7 +232,7 @@ edict_t *UTIL_GetPlayerEdict(const char *cmd)
   	{
 		edict_t* pPlayer = INDEXENT2(i);
 
-		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].is_connected)
+		if (FNullEnt(pPlayer) || !players[ENTINDEX2(pPlayer)].IsConnected)
 			continue;
 		if (strstr(STRING(pPlayer->v.netname),cmd)==NULL)
 			continue;
