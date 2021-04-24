@@ -79,25 +79,25 @@ static void UpdateEye(edict_t *pThis)
 	
 	
 	// is this player EYEing something? Yes? Set the speed
-	if (players[i].curPlayer != NULL) 
+	if (players[i].curPlayer != NULL)
 	{
-		if (players[i].next_time <= gpGlobals->time) 
+		if (players[i].next_time <= gpGlobals->time)
 		{
 			entvars_t *pevEye = VARS(players[i].curPlayer);
-			
+
 			float speed = pevEye->velocity.Length2D();
 			float percent;
 			if (pevEye->maxspeed > 0)
 				percent = (speed/pevEye->maxspeed) * 100.0f;
 			else
 				percent = 0;
-			
-			sprintf(szbuffer, "%s (%d %d)\nH:%.0f A:%.0f Sp:%.0f (%.0f%%)",
+
+			sprintf(szbuffer, "%s (%d %d)\nH:%.0f\nA:%.0f\nS:%.0f (%.0f%%)",
 				STRING(pevEye->netname), pevEye->playerclass, pevEye->team, pevEye->health, pevEye->armorvalue, speed, percent);
 			UTIL_SendHudMessage(pThis, 1, szbuffer);
-			
+
 			players[i].next_time = gpGlobals->time + 0.7f;
-		} 
+		}
 	}
 
 }
@@ -151,7 +151,7 @@ static void ClientDisconnect_Post(edict_t *pThis)
 		if(FNullEnt(pPlayer))
 			continue;
 
-		UTIL_SendTextMsg(pPlayer, HUD_PRINTTALK, "[EYE] Reset to normal! (Target disconnected from server)\n");
+		UTIL_SendTextMsg(pPlayer, HUD_PRINTTALK, "[EYE] Reset back to normal! (Target disconnected from server)\n");
 
 		SET_VIEW(pPlayer, pPlayer);
 
@@ -341,40 +341,44 @@ static void ClientCommand( edict_t *pThis )
 
 	const char *pcmd = CMD_ARGV(0);
 
-	if (!strcasecmp(pcmd,"eye_back"))
-	{
-		UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] Reset to normal!\n");
-
-		SET_VIEW(pThis, pThis);
-
-		players[id].curView = NULL;
-		players[id].curPlayer = NULL;
-
-		RETURN_META(MRES_SUPERCEDE);
-	}
-	else if (!strcasecmp(pcmd,"eye"))
+	if (!strcasecmp(pcmd,"eye"))
 	{
 		edict_t *pView;
 		const char *param = CMD_ARGV(1);
+
+		if (players[id].curView != NULL && players[id].curPlayer != NULL)
+		{
+			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] Reset back to normal!\n");
+
+			SET_VIEW(pThis, pThis);
+
+			players[id].curView = NULL;
+			players[id].curPlayer = NULL;
+
+			RETURN_META(MRES_SUPERCEDE);
+		}
+
 		if (param==NULL || !*param)
 		{
 			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] usage: eye <part_of_username>|#playerid\n");
-			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] usage: eye_back\n");
+			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] usage: eye to stop spectating\n");
 
 			RETURN_META(MRES_SUPERCEDE);
 		}
 
 		pView = UTIL_GetView(param);
 
-		if (!FNullEnt(pView) && pView == pThis)
-		{
-			UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] You cant spectate yourself!\n");
-
-			RETURN_META(MRES_SUPERCEDE);
-		}
-
 		if (!FNullEnt(pView))
 		{
+			int pViewid = ENTINDEX2(pView->v.owner);
+
+			if(id == pViewid)
+			{
+				UTIL_SendTextMsg(pThis, HUD_PRINTTALK, "[EYE] You cant spectate yourself!\n");
+
+				RETURN_META(MRES_SUPERCEDE);
+			}
+
 			UTIL_SendTextMsg(
 				pThis,
 				HUD_PRINTTALK,
