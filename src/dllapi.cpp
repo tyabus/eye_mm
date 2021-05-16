@@ -82,15 +82,10 @@ static void UpdateEye(edict_t *pThis)
 		{
 			entvars_t *pevEye = VARS(players[i].curPlayer);
 
-			float speed = pevEye->velocity.Length2D();
-			float percent;
-			if (pevEye->maxspeed > 0)
-				percent = (speed/pevEye->maxspeed) * 100.0f;
-			else
-				percent = 0;
+			short int speed = pevEye->velocity.Length2D();
 
-			sprintf(szbuffer, "%s (%d %d)\nH:%.0f\nA:%.0f\nS:%.0f (%.0f%%)",
-				STRING(pevEye->netname), pevEye->playerclass, pevEye->team, pevEye->health, pevEye->armorvalue, speed, percent);
+			sprintf(szbuffer, "%s (%d %d)\nH:%.0f\nA:%.0f\nS:%d",
+				STRING(pevEye->netname), pevEye->playerclass, pevEye->team, pevEye->health, pevEye->armorvalue, speed);
 			UTIL_SendHudMessage(pThis, 1, szbuffer);
 
 			players[i].next_time = gpGlobals->time + 0.7f;
