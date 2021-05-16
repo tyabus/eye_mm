@@ -1,8 +1,4 @@
-// vi: set ts=4 sw=4 :
-// vim: set tw=75 :
-
 // meta_api.cpp - minimal implementation of metamod's plugin interface
-
 // This is intended to illustrate the (more or less) bare minimum code
 // required for a valid metamod plugin, and is targeted at those who want
 // to port existing HL/SDK DLL code to run as a metamod plugin.
@@ -49,14 +45,12 @@
 enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
 
-
 static cvar_t eye_cvars[] = {
 	{"eye_version", VVERSION, FCVAR_EXTDLL | FCVAR_SERVER , 0, NULL},
 	{"eye_setinfo", "_eye_pw", FCVAR_EXTDLL , 0, NULL},
 	{"eye_password", "", FCVAR_EXTDLL , 0, NULL},
 	{NULL,NULL,0,0,NULL},
 };
-
 
 // Receive engine function table from engine.
 // This appears to be the _first_ DLL routine called by the engine, so we
@@ -118,21 +112,21 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable,
 	if(!pFunctionTable) {
 		return(FALSE);
 	}
-	
+
 	memset(pFunctionTable, 0, sizeof(META_FUNCTIONS));
 	pFunctionTable->pfnGetEntityAPI2      = __GetEntityAPI2;
 	pFunctionTable->pfnGetEntityAPI2_Post = __GetEntityAPI2_Post;
-	
+
 	gpGamedllFuncs=pGamedllFuncs;
 
-	int i;	
+	int i;
 	for(i=0;eye_cvars[i].name;i++) CVAR_REGISTER(&eye_cvars[i]);
 
 	for (i=0;i<=32;i++)
 	{
 		players[i].IsConnected = false;
 		players[i].IsAllowedToUse = false;
-		
+
 		players[i].Eye     = NULL;
 		players[i].curView = NULL;
 	}
@@ -145,7 +139,7 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable,
 // reason	(given) why detaching (refresh, console unload, forced unload, etc)
 C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME now, PL_UNLOAD_REASON reason) {
 	if(now && reason);	// to satisfy gcc -Wunused
-	
+
 	for(int i = 0;i<=32;i++)
 	{
 		RemoveEye(i);
@@ -153,6 +147,6 @@ C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME now, PL_UNLOAD_REASON reason) {
 		players[i].Eye     = NULL;
 		players[i].curView = NULL;
 	}
-	
+
 	return(TRUE);
 }

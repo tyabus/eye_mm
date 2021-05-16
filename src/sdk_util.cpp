@@ -1,8 +1,4 @@
-// vi: set ts=4 sw=4 :
-// vim: set tw=75 :
-
 // sdk_util.cpp - utility routines from HL SDK util.cpp
-
 // Selected portions of dlls/util.cpp from SDK 2.1.
 // Functions copied from there as needed...
 

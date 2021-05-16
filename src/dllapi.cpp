@@ -10,17 +10,16 @@
 
 playerid_t players[33];
 
-static char *pDotSpriteName     = "sprites/laserdot.spr";
+static char *pDotSpriteName     = (char*)"sprites/laserdot.spr";
 static int   m_dotspriteTexture = 0;
 char szbuffer[1024];
 
-
 /**************************************************************
-* 
+*
 * Removes view location entity
 *
 **************************************************************/
-void RemoveEye(int i) 
+static void RemoveEye(int i)
 {
 	if (!FNullEnt(players[i].Eye))
 	{
@@ -34,7 +33,7 @@ void RemoveEye(int i)
 
 
 /**************************************************************
-* 
+*
 * Creates view location entity
 *
 **************************************************************/
@@ -56,28 +55,27 @@ static void CreateEye(int i, edict_t *pThis)
 	pev->owner      = pThis;
 }
 
-
 /**************************************************************
-* 
+*
 * Updates view entity location and angles
 *
 **************************************************************/
 static void UpdateEye(edict_t *pThis)
 {
 	int i = ENTINDEX2(pThis);
-	
+
 	if (FNullEnt(players[i].Eye))
 	{
 		CreateEye(i,pThis);
 	}
-	
+
 	entvars_t *pev = VARS(players[i].Eye);
-	
+
 	pev->angles = pThis->v.v_angle;
 
 	SET_ORIGIN(players[i].Eye, pThis->v.origin + pThis->v.view_ofs);
-	
-	
+
+
 	// is this player EYEing something? Yes? Set the speed
 	if (players[i].curPlayer != NULL)
 	{
@@ -101,7 +99,6 @@ static void UpdateEye(edict_t *pThis)
 	}
 
 }
-
 
 /**************************************************************
 * 

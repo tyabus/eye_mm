@@ -1,7 +1,7 @@
 #ifndef __EYE_H__
 #define __EYE_H__
 
-#define VVERSION	"1.3"
+#define VVERSION	"1.31"
 #define VLOGTAG		"EYE"
 #define VDATE		__DATE__
 #define VNAME		"Eye " VVERSION " Metamod Plugin"
@@ -12,6 +12,8 @@ typedef struct
 {
 	BOOL IsConnected;
 	BOOL IsAllowedToUse;
+
+	int plCount;
 	int old_in_jump;
 
 	edict_t *Eye;
@@ -19,8 +21,6 @@ typedef struct
 	edict_t *curPlayer;
 
 	float next_time;
-
-	int plCount;
 } playerid_t;
 
 extern playerid_t players[33];
@@ -36,6 +36,6 @@ extern edict_t *UTIL_GetPlayerEdict( const char *cmd );
 extern void UTIL_SendTextMsg( edict_t *client, int msg_dest, const char *msg_name );
 extern void UTIL_SendHudMessage( edict_t *pEntity, int msg_dest, char *pMessage );
 extern int ENTINDEX2( edict_t *pEdict );
-extern edict_t * INDEXENT2( int playerIndex );
+extern edict_t *INDEXENT2( int playerIndex );
 
 #endif /*__EYE_H__*/
