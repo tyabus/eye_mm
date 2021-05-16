@@ -4,18 +4,17 @@ CFLAGS =  -O2 -Wall -funsafe-loop-optimizations \
 	  -fomit-frame-pointer -fno-exceptions -ffast-math \
 	  -Dstricmp=strcasecmp -D_strnicmp=strncasecmp -Dstrnicmp=strncasecmp -Dstrcmpi=strcasecmp
 LDFLAGS = -lm -ldl -shared -Wl,--no-undefined
+LIBEXT = so
 
-# Force i686 postfix on x86_64 architecture
+# Force 32 bit build on x86_64 architecture
 ifeq ($(ARCH), x86_64)
+	ARCH = i686
 	LDFLAGS += -m32
 	CFLAGS += -march=i686 -m32
-	DLLNAME = eye_mm_i686.so
-else
-	DLLNAME = eye_mm_$(ARCH).so
+	DLLNAME = eye_mm_$(ARCH).$(LIBEXT)
 endif
 
-INCLUDE = -Isrc/. \
-	-Isrc/include/metamod \
+INCLUDE = -Isrc/include/metamod \
 	-Isrc/include/engine \
 	-Isrc/include/common \
 	-Isrc/include/dlls \
@@ -23,7 +22,7 @@ INCLUDE = -Isrc/. \
 
 OBJ = 	src/sdk_util.o \
 	src/meta_api.o \
-	src/dllapi.o \
+	src/dllapi.o
 
 DOCC = $(CXX) $(CFLAGS) $(INCLUDE) -o $@ -c $<
 DOO = $(CXX) -o $@ $(OBJ) $(LDFLAGS)
@@ -36,3 +35,4 @@ clean:
 
 ./%.o: ./%.cpp
 	$(DOCC)
+
