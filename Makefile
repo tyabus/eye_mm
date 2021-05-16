@@ -1,6 +1,6 @@
 # Eye metamod plugin Makefile for linux and win32 (mingw)
 ARCH = $(shell uname -m)
-CFLAGS =  -O2 -Wall -funsafe-loop-optimizations \
+CFLAGS =  -O3 -Wall -funsafe-loop-optimizations -funsafe-math-optimizations \
 	  -fomit-frame-pointer -fno-exceptions -ffast-math \
 	  -Dstricmp=strcasecmp -D_strnicmp=strncasecmp -Dstrnicmp=strncasecmp -Dstrcmpi=strcasecmp
 LDFLAGS = -lm -ldl -shared -Wl,--no-undefined

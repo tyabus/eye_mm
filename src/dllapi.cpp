@@ -9,17 +9,16 @@
 #include <string.h>
 
 playerid_t players[33];
-
 static char *pDotSpriteName     = (char*)"sprites/laserdot.spr";
 static int   m_dotspriteTexture = 0;
-char szbuffer[1024];
+static char szbuffer[1024];
 
 /**************************************************************
 *
 * Removes view location entity
 *
 **************************************************************/
-static void RemoveEye(int i)
+void RemoveEye(int i)
 {
 	if (!FNullEnt(players[i].Eye))
 	{
@@ -551,8 +550,8 @@ int __GetEntityAPI2( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
 	pFunctionTable->pfnClientCommand         = ClientCommand;
 	pFunctionTable->pfnClientUserInfoChanged = ClientUserInfoChanged;
 	pFunctionTable->pfnServerActivate        = ServerActivate;
-	*(long*)&pFunctionTable->pfnCmdStart     = (long)CmdStart;
-	
+	*(long*)pFunctionTable->pfnCmdStart      = (long)CmdStart;
+
 	return(TRUE);
 }
 
